@@ -10,7 +10,15 @@ async function main() {
       "BROWSERLESS_TOKEN is not set in the environment variables."
     );
   }
-  const pwEndpoint = `wss://production-sfo.browserless.io/firefox/playwright?token=${token}`;
+
+  const params = new URLSearchParams({
+    token,
+    timeout: 300000,
+    headless: true,
+    stealth: true,
+  }).toString();
+
+  const pwEndpoint = `wss://production-sfo.browserless.io/firefox/playwright?${params}`;
   const browser = await playwright.firefox.connect(pwEndpoint);
   const context = await browser.newContext();
   const page = await context.newPage();
