@@ -4,7 +4,13 @@ import dotenv from "dotenv";
 dotenv.config();
 
 async function main() {
-  const pwEndpoint = `wss://production-sfo.browserless.io/firefox/playwright?token=GOES-HERE`;
+  const token = process.env.BROWSERLESS_TOKEN;
+  if (!token) {
+    throw new Error(
+      "BROWSERLESS_TOKEN is not set in the environment variables."
+    );
+  }
+  const pwEndpoint = `wss://production-sfo.browserless.io/firefox/playwright?token=${token}`;
   const browser = await playwright.firefox.connect(pwEndpoint);
   const context = await browser.newContext();
   const page = await context.newPage();
